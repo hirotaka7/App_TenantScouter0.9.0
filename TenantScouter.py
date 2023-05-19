@@ -115,7 +115,9 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main1='●').rename(
                             columns={'Ind_Main1':'大業界'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
+                        
                     )
                 if Ind1_MainSub=='サブ大業界も含む':
                     df_Ind_Sub1=df_MsbGeo.Ind_Sub1.str.split(', ',expand=True)
@@ -127,7 +129,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main1='●').rename(
                             columns={'Ind_Main1':'大業界'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
             Ind2_List=st.multiselect(
                 label='小業界 | Small Industry',
@@ -147,7 +150,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main2='●').rename(
                             columns={'Ind_Main2':'小業界'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
                 if Ind2_MainSub=='サブ小業界も含む':
                     df_Ind_Sub2=df_MsbGeo.Ind_Sub2.str.split(', ',expand=True)
@@ -159,7 +163,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main2='●').rename(
                             columns={'Ind_Main2':'小業界'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
             start_Capital,end_Capital=st.select_slider(
                 label='資本金 | Capital',
@@ -210,7 +215,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Capital='●').rename(
                         columns={'Capital':'資本金'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
             start_Revenue,end_Revenue=st.select_slider(
                 label='売上高 | Revenue',
@@ -266,7 +272,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Revenue='●').rename(
                         columns={'Revenue':'売上高'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
             start_Employee,end_Employee=st.select_slider(
                 label='従業員数 | Number of Employees',
@@ -322,7 +329,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Num_Employee='●').rename(
                         columns={'Num_Employee':'従業員数'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
             start_Branch,end_Branch=st.select_slider(
                 label='事業所数 | Number of Branches',
@@ -378,7 +386,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Num_Branch='●').rename(
                         columns={'Num_Branch':'事業所数'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
             df_Search=pd.DataFrame(
                 data=[
@@ -619,7 +628,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main1='●').rename(
                         columns={'Ind_Main1':'大業界'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
                 df_Ind_Sub2=df_MsbGeo.Ind_Sub2.str.split(', ',expand=True)
                 df=pd.merge(
@@ -630,7 +640,8 @@ if zip_Capsule is not None:
                     ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Ind_Main2='●').rename(
                         columns={'Ind_Main2':'小業界'}
                     ),
-                    how='outer'
+                    how='outer',
+                    on='企業名'
                 )
                 if Capital_Range!='-':
                     df=pd.merge(
@@ -640,7 +651,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Capital='●').rename(
                             columns={'Capital':'資本金'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
                 if Revenue_Range!='-':
                     df=pd.merge(
@@ -650,7 +662,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Revenue='●').rename(
                             columns={'Revenue':'売上高'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
                 if Num_Employee_Range!='-':
                     df=pd.merge(
@@ -660,7 +673,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Num_Employee='●').rename(
                             columns={'Num_Employee':'従業員数'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
                 if Num_Branch_Range!='-':
                     df=pd.merge(
@@ -670,7 +684,8 @@ if zip_Capsule is not None:
                         ][['Comp_Name']].drop_duplicates().rename(columns={'Comp_Name':'企業名'}).assign(Num_Branch='●').rename(
                             columns={'Num_Branch':'事業所数'}
                         ),
-                        how='outer'
+                        how='outer',
+                        on='企業名'
                     )
                 df_Search=pd.DataFrame(
                     data=[
