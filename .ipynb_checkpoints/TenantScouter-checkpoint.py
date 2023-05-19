@@ -55,10 +55,9 @@ with st.sidebar:
                 gdf_Ring=gpd.read_file(f,encoding='utf-8')
             with z.open('06_MsbGeo.csv') as f:
                 df_MsbGeo=pd.read_csv(f,encoding='utf-8',dtype=df_MsbGeo_dtype)
-                df=pd.DataFrame().assign(Comp_Name=df_MsbGeo.Comp_Name.value_counts().index)
-                df=df.assign(Count=df_MsbGeo.Comp_Name.value_counts().values)
-                df=df.rename(columns={'Count':'周辺拠点数'})
-                
+                df=pd.DataFrame(df_MsbGeo.Comp_Name.value_counts()).reset_index().rename(columns={
+                    'Comp_Name':'Area_Branch','index':'Comp_Name'
+                })
 
 if zip_Capsule is None:
     image=Image.open('ACube.PNG')
@@ -113,9 +112,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             df_MsbGeo.Ind_Main1.isin(Ind1_List)
-                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●').rename(
-                            columns={'Ind_Main1':'大業界'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●'),
                         how='outer'                        
                     )
                 if Ind1_MainSub=='サブ大業界も含む':
@@ -125,9 +122,7 @@ if zip_Capsule is not None:
                         df_MsbGeo[
                             (df_MsbGeo.Ind_Main1.isin(Ind1_List))|
                             (df_MsbGeo.index.isin(df_Ind_Sub1[df_Ind_Sub1.isin(Ind1_List)].dropna(how='all').index))
-                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●').rename(
-                            columns={'Ind_Main1':'大業界'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●'),
                         how='outer'
                     )
             Ind2_List=st.multiselect(
@@ -145,9 +140,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             df_MsbGeo.Ind_Main2.isin(Ind2_List)
-                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●').rename(
-                            columns={'Ind_Main2':'小業界'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●'),
                         how='outer'
                     )
                 if Ind2_MainSub=='サブ小業界も含む':
@@ -157,9 +150,7 @@ if zip_Capsule is not None:
                         df_MsbGeo[
                             (df_MsbGeo.Ind_Main2.isin(Ind2_List))|
                             (df_MsbGeo.index.isin(df_Ind_Sub2[df_Ind_Sub2.isin(Ind2_List)].dropna(how='all').index))
-                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●').rename(
-                            columns={'Ind_Main2':'小業界'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●'),
                         how='outer'
                     )
             start_Capital,end_Capital=st.select_slider(
@@ -208,9 +199,7 @@ if zip_Capsule is not None:
                     df,
                     df_MsbGeo[
                         (df_MsbGeo.Capital>=s_Capital)&(df_MsbGeo.Capital<e_Capital)
-                    ][['Comp_Name']].drop_duplicates().assign(Capital='●').rename(
-                        columns={'Capital':'資本金'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Capital='●'),
                     how='outer'
                 )
             start_Revenue,end_Revenue=st.select_slider(
@@ -264,9 +253,7 @@ if zip_Capsule is not None:
                     df,
                     df_MsbGeo[
                         (df_MsbGeo.Revenue>=s_Revenue)&(df_MsbGeo.Revenue<e_Revenue)
-                    ][['Comp_Name']].drop_duplicates().assign(Revenue='●').rename(
-                        columns={'Revenue':'売上高'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Revenue='●'),
                     how='outer'
                 )
             start_Employee,end_Employee=st.select_slider(
@@ -320,9 +307,7 @@ if zip_Capsule is not None:
                     df,
                     df_MsbGeo[
                         (df_MsbGeo.Num_Employee>=s_Employee)&(df_MsbGeo.Num_Employee<e_Employee)
-                    ][['Comp_Name']].drop_duplicates().assign(Num_Employee='●').rename(
-                        columns={'Num_Employee':'従業員数'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Num_Employee='●'),
                     how='outer'
                 )
             start_Branch,end_Branch=st.select_slider(
@@ -376,9 +361,7 @@ if zip_Capsule is not None:
                     df,
                     df_MsbGeo[
                         (df_MsbGeo.Num_Branch>=s_Branch)&(df_MsbGeo.Num_Branch<e_Branch)
-                    ][['Comp_Name']].drop_duplicates().assign(Num_Branch='●').rename(
-                        columns={'Num_Branch':'事業所数'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Num_Branch='●'),
                     how='outer'
                 )
             df_Search=pd.DataFrame(
@@ -617,9 +600,7 @@ if zip_Capsule is not None:
                     df_MsbGeo[
                         (df_MsbGeo.Ind_Main1==Ind_Main1)|
                         (df_MsbGeo.index.isin(df_Ind_Sub1[df_Ind_Sub1.isin([Ind_Main1])].dropna(how='all').index))
-                    ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●').rename(
-                        columns={'Ind_Main1':'大業界'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Ind_Main1='●'),
                     how='outer'
                 )
                 df_Ind_Sub2=df_MsbGeo.Ind_Sub2.str.split(', ',expand=True)
@@ -628,9 +609,7 @@ if zip_Capsule is not None:
                     df_MsbGeo[
                         (df_MsbGeo.Ind_Main2==Ind_Main2)|
                         (df_MsbGeo.index.isin(df_Ind_Sub2[df_Ind_Sub2.isin([Ind_Main2])].dropna(how='all').index))
-                    ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●').rename(
-                        columns={'Ind_Main2':'小業界'}
-                    ),
+                    ][['Comp_Name']].drop_duplicates().assign(Ind_Main2='●'),
                     how='outer'
                 )
                 if Capital_Range!='-':
@@ -638,9 +617,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             (df_MsbGeo.Capital>=s_Capital)&(df_MsbGeo.Capital<e_Capital)
-                        ][['Comp_Name']].drop_duplicates().assign(Capital='●').rename(
-                            columns={'Capital':'資本金'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Capital='●'),
                         how='outer'
                     )
                 if Revenue_Range!='-':
@@ -648,9 +625,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             (df_MsbGeo.Revenue>=s_Revenue)&(df_MsbGeo.Revenue<e_Revenue)
-                        ][['Comp_Name']].drop_duplicates().assign(Revenue='●').rename(
-                            columns={'Revenue':'売上高'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Revenue='●'),
                         how='outer'
                     )
                 if Num_Employee_Range!='-':
@@ -658,9 +633,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             (df_MsbGeo.Num_Employee>=s_Employee)&(df_MsbGeo.Num_Employee<e_Employee)
-                        ][['Comp_Name']].drop_duplicates().assign(Num_Employee='●').rename(
-                            columns={'Num_Employee':'従業員数'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Num_Employee='●'),
                         how='outer'
                     )
                 if Num_Branch_Range!='-':
@@ -668,9 +641,7 @@ if zip_Capsule is not None:
                         df,
                         df_MsbGeo[
                             (df_MsbGeo.Num_Branch>=s_Branch)&(df_MsbGeo.Num_Branch<e_Branch)
-                        ][['Comp_Name']].drop_duplicates().assign(Num_Branch='●').rename(
-                            columns={'Num_Branch':'事業所数'}
-                        ),
+                        ][['Comp_Name']].drop_duplicates().assign(Num_Branch='●'),
                         how='outer'
                     )
                 df_Search=pd.DataFrame(
@@ -702,7 +673,7 @@ if zip_Capsule is not None:
 ###############################################################################################
     
     with col2:
-        df=df.assign(Point=(df=='●').sum(axis=1)).sort_values(['Point','周辺拠点数'],ascending=False)
+        df=df.assign(Point=(df=='●').sum(axis=1)).sort_values(['Point','Area_Branch'],ascending=False)
         ColList=df.columns.tolist()
         NewColList=ColList[0:1]+ColList[-1:]+ColList[1:-1]
         df=df[NewColList].reset_index(drop=True)
